@@ -11,11 +11,11 @@ for key in ['http_proxy', 'https_proxy', 'HTTP_PROXY', 'HTTPS_PROXY']:
         del os.environ[key]
 
 st.set_page_config(page_title="Chatbot financial advisor", page_icon="🤖")
-st.title("🤖 Assistant IA - financial")
+st.title("Assistant IA - financial")
 
 load_dotenv()
 if not os.getenv("GOOGLE_API_KEY"):
-    st.error("❌ Clé API manquante. Vérifie ton fichier .env")
+    st.error(" Clé API manquante. Vérifie ton fichier .env")
     st.stop()
 
 with st.sidebar:
@@ -26,11 +26,19 @@ with st.sidebar:
         index=0
     )
     
-    system_prompt = st.text_area(
-        "Personnalité du chatbot :",
-        "Tu es un assistant IA expert en finance. Tu réponds de manière concise.",
-        help="Changez ici le rôle de l'IA (ex: Expert Finance, Coach Sportif...)"
-    )
+        
+    default_prompt = """Tu es un Conseiller Financier Senior expérimenté et prudent.
+    Tes réponses doivent être :
+    1. Pédagogiques (explique les termes complexes comme ETF, PEA, Crypto).
+    2. Prudentes (ajoute toujours un avertissement : "Ceci n'est pas un conseil en investissement certifié").
+    3. Structurées (utilise des listes à puces).
+
+    Si on te pose une question hors de la finance (ex: cuisine), réponds poliment que tu ne traites que les sujets financiers."""
+
+    system_prompt = st.text_area("Personnalité du chatbot :", default_prompt, height=200)
+        
+        
+
     
     if st.button("🗑️ Effacer la conversation"):
         st.session_state.chat_history = []
