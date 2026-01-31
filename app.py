@@ -49,6 +49,14 @@ with st.sidebar:
     if st.button("🗑️ Effacer la conversation"):
         st.session_state.chat_history = []
         st.rerun()
+        
+        
+    st.sidebar.markdown("---")
+    st.sidebar.warning(
+        "⚠️ Avertissement :\n\n"
+        "Cette IA fournit des informations à but éducatif uniquement. "
+        "Ne prenez pas de décisions financières basées sur ces réponses. "
+    )    
 
 
 llm = ChatGoogleGenerativeAI(
@@ -67,6 +75,32 @@ for message in st.session_state.chat_history:
     elif isinstance(message, AIMessage):
         with st.chat_message("assistant"):
             st.markdown(message.content)
+
+
+
+# historique est vide -> affiche des suggestions
+if len(st.session_state.chat_history) == 0:
+    st.markdown("Questions fréquentes")
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        if st.button("📈 Analyser le CAC40"):
+            user_input = "Quelle est la tendance actuelle du CAC40 ?" 
+            
+    with col2:
+        if st.button("💰 C'est quoi un PEA ?"):
+            pass 
+            
+    with col3:
+        if st.button("🏠 Achat immobilier"):
+            pass
+            
+    st.info("👋 Bonjour ! Je suis votre conseiller financier IA. Envoyez-moi un graphique ou posez une question.")
+
+
+
+
+
 
 user_input = st.chat_input("Votre question financière...")
 
