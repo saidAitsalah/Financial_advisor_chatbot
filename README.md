@@ -3,7 +3,7 @@
 ## Description
 Ce projet, développé implémente un agent conversationnel spécialisé dans le conseil financier. L'application exploite LLM gemini-pro pour fournir des explications pédagogiques sur des concepts financiers, des stratégies d'investissement et la gestion des risques pour débutants.
 
-## Acces au chatbot déployer :  https://financialadvisorchatbot-jx2exutabvheebqp2cpjqj.streamlit.app/
+## Acces au chatbot déployé :  https://financialadvisorchatbot-jx2exutabvheebqp2cpjqj.streamlit.app/
 
 
 ## Architecture Technique
