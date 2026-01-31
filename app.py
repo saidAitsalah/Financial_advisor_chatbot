@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import sys
+import base64
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -81,20 +82,22 @@ if user_input:
     with st.chat_message("assistant"):
         with st.spinner("L'IA analyse..."):
             try:
-                #  IMAGE + Texte
                 if img_file:
-                    # Conversion pour Gemini
-                    image = Image.open(img_file)
                     
+                    img_bytes = img_file.getvalue()
+                   
+                    base64_image = base64.b64encode(img_bytes).decode('utf-8')
+                    # format attendu par LangChain Data URI
+                    image_data = f"data:{img_file.type};base64,{base64_image}"
+
                     response = llm.invoke([
                         HumanMessage(content=[
                             {"type": "text", "text": default_prompt + "\n\nAnalyse cette image et réponds à : " + user_input},
-                            {"type": "image_url", "image_url": img_file} 
+                            {"type": "image_url", "image_url": image_data} 
                         ])
                     ])
-                    #Pour les images Gemini gère mieux avec invoke 
                 
-                # Texte seul 
+                # Texte seul
                 else:
                     prompt_template = ChatPromptTemplate.from_messages([
                         ("system", default_prompt),
@@ -108,7 +111,7 @@ if user_input:
                         "input": user_input
                     })
 
-               
+                # Affichage et sauvegarde réponse
                 st.markdown(response.content)
                 st.session_state.chat_history.append(AIMessage(content=response.content))
                 
